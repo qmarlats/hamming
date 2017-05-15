@@ -6,6 +6,14 @@
 \usepackage[margin=2.5cm]{geometry}
 
 
+% Maths
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+
+\numberwithin{equation}{section}
+
+
 % Fonts
 
 \usepackage[utf8]{inputenc}
@@ -24,19 +32,14 @@
 
 \usepackage[backend=biber, style=verbose]{biblatex}
 
-%\bibliography{Documentation_FR}
-
-
-% Maths
-
-\usepackage{amsmath}
-
-\numberwithin{equation}{section}
+\bibliography{Documentation_FR}
 
 
 % Links
 
 \usepackage[colorlinks=true, linkcolor=black]{hyperref}
+
+\newcommand\footnoteurl[2]{\href{#1}{#2}\footnote{\url{#1}}}
 
 
 % Images
@@ -69,6 +72,12 @@
 \author{Quentin \textsc{Marlats} -- Thomas \textsc{Goerger}}
 
 
+% Theorems
+
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}[section]
+
+
 
 
 
@@ -86,13 +95,42 @@
 \setcounter{page}{1}
 
 
-%\newpage
-%\clearpage
+\section{Introduction}
 
-%\printbibliography
+Le projet \textbf{Hamming} consiste à simuler la transmission de messages à l'aide du code de Hamming. Il permet de simuler toute la chaîne de transmission : encodage du message, transmission avec une éventuelle erreur puis détection et correction de l'éventuelle erreur. Ce projet a été réalisé en Python par Quentin \textsc{Marlats} et Thomas \textsc{Goerger}. Son code source est disponible sur \footnoteurl{https://github.com/qmarlats/hamming}{Github}.
 
-%\pagenumbering{roman}
-%\setcounter{page}{1}
+\subsection{Codes correcteurs d'erreurs}
+
+Les codes correcteurs d'erreurs sont utilisés afin de détecter et parfois corriger les erreurs lors de la transmission d'informations. En effet, les canaux de communication (fibres optiques, radio, disques compacts\ldots ou, plus simplement, la parole : deux êtres humains qui communiquent, en fonction de l'environnement dans lequel ils se trouvent, peuvent ne pas se comprendre correctement) ne sont pas entièrement fiables et les informations transmises contiennent généralement des erreurs.
+
+\paragraph{Contexte d'utilisation} Nous utilisons régulièrement, dans notre quotidien, des codes correcteurs d'erreurs, sans même nous en rendre compte. Lorsque l'on souhaite par exemple épeler un mot par téléphone, les lettres peuvent être mal comprises. Ainsi, à cause de la qualité plus ou moins bonne d'une communication par téléphone, les lettres \og P \fg{} et \og T \fg{} peuvent facilement être confondues. Pour éviter toute confusion, il est alors possible de dire \og P comme pomme \fg{} et \og T comme tomate \fg{}, ce qui permet de s'assurer de la bonne compréhension des lettres \og P \fg{} et \og T \fg{}. C'est le principe d'un code correcteur d'erreur : on rajoute des informations au message à transmettre afin de détecter et parfois de corriger les éventuelles erreurs introduites lors de sa transmission.
+
+\paragraph{Exemple mathématique} L'exemple suivant, tiré de Wikipédia\footcite{wikipedia:codes-correcteurs}, donne un exemple mathématique concret d'un code correcteur d'erreurs. Soit un bloc de trois nombres que l'on souhaite transmettre : $02$ $09$ $12$. Ajoutons deux nombres de contrôle de l'information. Le premier est la somme des 3 nombres : $02 + 09 + 12 = 23$. Le second est la somme pondérée des 3 nombres, chacun est multiplié par son rang : $02 \times 1 + 09 \times 2 + 12 \times 3 = 56$. À la sortie du codeur, le bloc à transmettre est : $02$ $09$ $12$ $23$ $56$. À la suite d’une perturbation, le récepteur reçoit : $02$ $13$ $12$ $23$ $56$. À partir des données reçues, le décodeur calcule :
+\begin{itemize}
+  \item Sa somme simple : $02 + 13 + 12 = 27$
+  \item Sa somme pondérée : $02 \times 1 + 13 \times 2 + 12 \times 3 = 64$
+\end{itemize}
+La différence entre la somme simple calculée ($27$) et celle reçue ($23$) indique la valeur de l'erreur : $4$ ($27 - 23 = 4$). La différence entre la somme pondérée calculée ($64$) et celle reçue ($56$), elle-même divisée par la valeur de l'erreur indique la position où l'erreur se trouve : $2$ ($(64 - 56) \div 4 = 2$). Il faut donc retirer $4$ au nombre du rang 2. Le bloc original est donc $02$ $(13 - 4 = 09)$ $12$ $23$ $56$.
+
+\subsection{Code de Hamming}
+
+
+\begin{definition}[Code linéaire]
+Un code binaire $C$ est linéaire si la somme de deux mots quelconques du code est encore un mot du code : $\forall w_1, w_2 \in C, w_1 + w_2 \in C$.
+\end{definition}
+
+Le code de Hamming est un code correcteur linéaire qui permet la détection et la correction d'erreurs, à condition que le message n'en comporte qu'une seule (bien qu'il soit possible, éventuellement, de détecter une seconde erreur, voir d'en corriger une seconde avec un code de Hamming cyclique). Il s'agit d'un code parfait : il ne contient aucune redondance inutile, il n'est donc pas possible d'avoir un code plus compact pour une même efficacité de correction. \\
+
+Le projet \textbf{Hamming} permet de simuler la transmission d'un message à l'aide d'un code de Hamming, et ce, quelle que soit sa taille (dans les limites du langage Python). Il permet également de simuler la transmission d'un message à l'aide d'un code de Hamming cyclique. Le fonctionnement de ces deux codes seront expliqués ultérieurement dans ce document, ainsi que le fonctionnement du programme Python.
+
+
+\newpage
+\clearpage
+
+\printbibliography
+
+\pagenumbering{roman}
+\setcounter{page}{1}
 
 
 \end{document}

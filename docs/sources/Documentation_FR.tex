@@ -1,0 +1,98 @@
+% Document properties
+
+\documentclass[a4paper]{article}
+
+\usepackage[francais]{babel}
+\usepackage[margin=2.5cm]{geometry}
+
+
+% Fonts
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{newpxtext, eulerpx}
+
+
+% Style
+
+\usepackage[none]{hyphenat}
+\usepackage[bottom]{footmisc}
+
+
+% Bibliography
+
+\usepackage[backend=biber, style=verbose]{biblatex}
+
+%\bibliography{Documentation_FR}
+
+
+% Maths
+
+\usepackage{amsmath}
+
+\numberwithin{equation}{section}
+
+
+% Links
+
+\usepackage[colorlinks=true, linkcolor=black]{hyperref}
+
+
+% Images
+
+\usepackage{graphicx}
+
+
+% Date
+
+\usepackage[datesep=/, style=ddmmyyyy]{datetime2}
+
+
+% Header & Footer
+
+\usepackage{fancyhdr}
+
+\pagestyle{fancy}
+
+\lhead{Hamming -- Documentation}
+\rhead{\DTMdate{2017-05-15}}
+
+
+% Title
+
+\title{
+  Hamming \\\vskip0.5em
+  \large Documentation
+}
+\date{}
+\author{Quentin \textsc{Marlats} -- Thomas \textsc{Goerger}}
+
+
+
+
+
+% Content
+
+\begin{document}
+
+
+\maketitle
+\tableofcontents
+
+\thispagestyle{empty}
+\clearpage
+
+\setcounter{page}{1}
+
+
+%\newpage
+%\clearpage
+
+%\printbibliography
+
+%\pagenumbering{roman}
+%\setcounter{page}{1}
+
+
+\end{document}

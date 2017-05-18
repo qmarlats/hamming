@@ -27,3 +27,17 @@ def get_m(message):
         The number of parity bits
     """
     return ceil(log(len(message))/log(2)) + 1
+
+
+def get_k(message):
+    """
+    Get the number of data bits needed for a message in order to be encoded
+    with a Hamming code.
+
+    Arguments:
+        - message (str): the binary message
+
+    Returns:
+        The number of data bits
+    """
+    return get_n(message) - get_m(message)

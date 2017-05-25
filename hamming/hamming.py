@@ -1,7 +1,9 @@
 from math import ceil, log
 
+import numpy as np
+
 from utils import is_power_of_2
-from vectors import get_canonical_basis_vectors
+from vectors import get_canonical_basis_vectors, to_vector
 
 
 def get_n(message):
@@ -130,5 +132,28 @@ def get_h(message):
         matrix.append([])
         for number in numbers:
             matrix[i].append(int(number[i]))
+
+    return matrix
+
+
+def encode(message):
+    """
+    Encode a binary message with Hamming code.
+
+    Arguments:
+        - message (str): the binary message
+
+    Returns:
+        The encoded message
+    """
+    # Get G and the message as a vector
+    g = get_g(message)
+    message = to_vector(message)
+
+    # Get the matrix product of G and the message
+    matrix = np.dot(g, message)
+
+    # Convert the result to a list of binary elements
+    matrix = [int(bin(element)[-1:]) for element in matrix]
 
     return matrix

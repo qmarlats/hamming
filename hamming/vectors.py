@@ -14,3 +14,16 @@ def get_canonical_basis_vectors(dimension):
     ]
 
     return vectors
+
+
+def to_vector(message):
+    """
+    Convert a binary message into a vector.
+
+    Arguments:
+        - message (str): the binary message
+
+    Returns:
+        The message as a vector
+    """
+    return [int(element) for element in message]

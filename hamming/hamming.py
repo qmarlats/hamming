@@ -1,3 +1,4 @@
+import random
 from math import ceil, log
 
 import numpy as np
@@ -136,12 +137,14 @@ def get_h(message):
     return matrix
 
 
-def encode(message):
+def encode(message, error_probability=0):
     """
     Encode a binary message with Hamming code.
 
     Arguments:
         - message (str): the binary message
+        - error_probability (float): the probability to add an error into the
+          matrix (must be number from 0 up to 1)
 
     Returns:
         The encoded message
@@ -155,6 +158,12 @@ def encode(message):
 
     # Convert the result to a list of binary elements
     matrix = [int(bin(element)[-1:]) for element in matrix]
+
+    # Simulate an eventual error
+    error = random.random() < error_probability
+    if error:
+        position = random.randint(1, len(matrix))
+        matrix[position - 1] = int(bin(~matrix[position - 1])[-1:])
 
     return matrix
 

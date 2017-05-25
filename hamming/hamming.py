@@ -118,7 +118,7 @@ def get_h(message):
         The parity-check matrix
     """
     # Get n
-    n = get_n(message)
+    n = len(message)
 
     # Get length necessary to represent n in binary
     length = n.bit_length()

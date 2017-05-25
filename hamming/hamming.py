@@ -102,3 +102,33 @@ def get_g(message):
             matrix[j][i] = element
 
     return matrix
+
+
+def get_h(message):
+    """
+    Get the parity-check matrix H which will allow to check the validity of the
+    message and eventually find the error position.
+
+    Arguments:
+        - message (str): the binary message
+
+    Returns:
+        The parity-check matrix
+    """
+    # Get n
+    n = get_n(message)
+
+    # Get length necessary to represent n in binary
+    length = n.bit_length()
+
+    # Get binary numbers from 1 to n
+    numbers = ['{0:0{1}b}'.format(i + 1, length) for i in range(n)]
+
+    # Define the parity-check matrix
+    matrix = []
+    for i in range(length):
+        matrix.append([])
+        for number in numbers:
+            matrix[i].append(int(number[i]))
+
+    return matrix

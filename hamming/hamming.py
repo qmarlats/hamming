@@ -157,3 +157,30 @@ def encode(message):
     matrix = [int(bin(element)[-1:]) for element in matrix]
 
     return matrix
+
+
+def decode(message):
+    """
+    Decode a binary message with Hamming code.
+
+    Arguments:
+        - message (str): the binary message
+
+    Returns:
+        The decoded message
+    """
+    # Get H
+    h = get_h(message)
+
+    # Get the matrix product of H and the message
+    matrix = np.dot(h, message)
+
+    # Convert the result to a list of binary elements
+    matrix = [int(bin(element)[-1:]) for element in matrix]
+
+    # Fix eventual errors
+    if not all(element == 0 for element in matrix):
+        position = int(''.join(str(element) for element in matrix), 2)
+        message[position - 1] = int(bin(~message[position - 1])[-1:])
+
+    return message

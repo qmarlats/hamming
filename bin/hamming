@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+
+import argparse
+import os
+import sys
+
+path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../hamming'))
+if path not in sys.path:
+    sys.path.insert(1, path)
+
+try:
+    from hamming import decode, encode, get_g, get_h
+except ImportError:
+    raise ImportError('Unable to import hamming module.')
+
+
+# Declare types of arguments
+def probability(x):
+    x = float(x)
+    if x < 0.0 or x > 1.0:
+        raise argparse.ArgumentTypeError(
+            '{} not in range [0.0, 1.0]'.format(x)
+        )
+
+    return x
+
+
+def binary(x):
+    allowed_chars = {'0', '1'}
+    if set(x) > allowed_chars:
+        raise argparse.ArgumentTypeError('{} is not a binary number'.format(x))
+
+    return x
+
+
+# Set up parser
+parser = argparse.ArgumentParser(
+    prog='Hamming',
+    usage='hamming [-e PROBABILITY] [-v] message',
+    description='Simulate message transmission using a Hamming code.',
+    formatter_class=lambda prog: argparse.HelpFormatter(prog,
+                                                        max_help_position=27)
+)
+
+parser.add_argument('message', type=binary, help='message to transmit')
+parser.add_argument('-e, --error', metavar='PROBABILITY', type=probability,
+                    dest='error', default=0, help='probability of an error')
+parser.add_argument('-v, --verbose', default=False, action='store_true',
+                    dest='verbose', help='verbose output')
+
+args = parser.parse_args()
+
+
+# Run programm
+message = str(args.message)
+print('Your message:\n', message)
+
+if args.verbose:
+    g = get_g(message)
+    print('Encoding matrix (G):')
+    [print(' {}'.format(line)) for line in g]
+
+encoded_message = encode(message)
+print('Encoded message:\n', encoded_message)
+
+received_message = encode(message, args.error)
+print('Received message:\n', received_message)
+
+if args.verbose:
+    h = get_h(encoded_message)
+    print('Decoding matrix (H):')
+    [print(' {}'.format(line)) for line in h]
+
+decoded_message = decode(received_message)
+print('Decoded message:\n', decoded_message)

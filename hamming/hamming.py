@@ -210,4 +210,10 @@ def decode(message):
         position = int(''.join(str(element) for element in matrix), 2)
         message[position - 1] = int(bin(~message[position - 1])[-1:])
 
+    # Return data bits as a message
+    message = [str(element)
+               for i, element in enumerate(message)
+               if not is_power_of_2(i + 1)]
+    message = ''.join(message)
+
     return message

@@ -1,7 +1,9 @@
 import random
+import re
 from math import ceil, log
 
 import numpy as np
+from scipy.special import lambertw
 
 from utils import is_power_of_2
 from vectors import get_canonical_basis_vectors, to_vector
@@ -18,7 +20,7 @@ def get_n(message):
     Returns:
         The total number of bits
     """
-    return 2**(ceil(log(len(message))/log(2)) + 1) - 1
+    return 2**get_m(message)-1
 
 
 def get_m(message):
@@ -32,7 +34,17 @@ def get_m(message):
     Returns:
         The number of parity bits
     """
-    return ceil(log(len(message))/log(2)) + 1
+    # Get k
+    k = len(message)
+
+    # Calculate m
+    m = -(lambertw(-2**(-k-1)*log(2), -1)+k*log(2)+log(2))/log(2)
+
+    # Extract answer
+    regex = re.findall(r'\d+(?:\.\d+)?', str(m))
+    m = ceil(float(regex[0]))
+
+    return m
 
 
 def get_k(message):

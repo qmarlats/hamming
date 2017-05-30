@@ -161,8 +161,14 @@ def encode(message, error_probability=0):
     Returns:
         The encoded message
     """
-    # Get G and the message as a vector
+    # Get k and G
+    k = get_k(message)
     g = get_g(message)
+
+    # Fix message length
+    message = '{0:0{1}b}'.format(int(message, 2), k)
+
+    # Make the message a vector
     message = to_vector(message)
 
     # Get the matrix product of G and the message
